@@ -12,7 +12,19 @@ PROCEDURE: 'procedure';
 FUNCTION: 'function';
 IS: 'is';
 TYPE: 'type';
-
+ARRAY: 'array';
+OF: 'of';
+RECORD: 'record';
+WITH: 'with';
+SELECT: 'select';
+WHEN: 'when';
+OTHERS: 'others';
+LOOP: 'loop';
+EXIT: 'exit';
+CONTINUE: 'continue';
+RETURN: 'return';
+THEN: 'then';
+WHILE: 'while';
 
 /* Identifiers */
 ID: [a-zA-Z] [a-zA-Z0-9_]*;
@@ -38,6 +50,8 @@ SEMICOLON: ';';
 COLON: ':';
 LPAREN: '(';
 RPAREN: ')';
+LEFT_BRACKET: '['  ;
+RIGHT_BRACKET: ']'  ;
 PERIOD: '.';
 DOT_DOT: '..' ;
 ARROW: '=>';
@@ -57,3 +71,47 @@ BLOCK_COMMENT: '/' .? '/' -> skip;
 WS: [ \t\r\n]+ -> skip;
 
 /* Parser rules */
+
+program: statementList;
+
+statementList: statement+
+    ;
+
+statement: assignment
+         | procedureCall
+         | conditionalStatement
+         | loopStatement
+         | exitStatement
+         | returnStatement
+         | nullStatement
+         ;
+
+
+expression: expression (AND | OR) expression
+         | expression (LT | GT | LTE | GTE) expression
+         | expression (ADD | SUB) expression
+         | expression (MUL | DIV) expression
+         | NOT expression
+         | LPAREN expression RPAREN
+         | ID
+         | INT
+         | FLOAT
+         | CHAR
+         | STRING
+         ;
+
+assignment: ID EQUALS expression SEMICOLON;
+
+procedureCall: ID LPAREN argumentList RPAREN SEMICOLON;
+
+argumentList: expression (COMMA expression)*;
+
+conditionalStatement: IF expression THEN statementList (ELSE statementList)? END IF SEMICOLON;
+
+loopStatement: WHILE expression LOOP statementList END LOOP SEMICOLON;
+
+exitStatement: EXIT;
+
+returnStatement: RETURN expression SEMICOLON;
+
+nullStatement: SEMICOLON;
