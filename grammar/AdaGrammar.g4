@@ -3,28 +3,79 @@ grammar AdaGrammar;
 /* TOKENS */
 
 /* Keywords */
-PROGRAM: 'program';
-BEGIN: 'begin';
-END: 'end';
-IF: 'if';
-ELSE: 'else';
-PROCEDURE: 'procedure';
-FUNCTION: 'function';
-IS: 'is';
-TYPE: 'type';
+ABORT: 'abort';
+ABS: 'abs';
+ABSTRACT: 'abstract';
+ACCEPT: 'accept';
+ACCESS: 'access';
+ALIASED: 'aliased';
+ALL: 'all';
+AND: 'and';
 ARRAY: 'array';
-OF: 'of';
-RECORD: 'record';
-WITH: 'with';
-SELECT: 'select';
-WHEN: 'when';
-OTHERS: 'others';
-LOOP: 'loop';
+AT: 'at';
+BEGIN: 'begin';
+BODY: 'body';
+CASE: 'case';
+CONSTANT: 'constant';
+DECLARE: 'declare';
+DELAY: 'delay';
+DELTA: 'delta';
+DIGITS: 'digits';
+DO: 'do';
+ELSE: 'else';
+ELSIF: 'elsif';
+END: 'end';
+ENTRY: 'entry';
+EXCEPTION: 'exception';
 EXIT: 'exit';
-CONTINUE: 'continue';
+FOR: 'for';
+FUNCTION: 'function';
+GENERIC: 'generic';
+GOTO: 'goto';
+IF: 'if';
+IN: 'in';
+INTERFACE: 'interface';
+IS: 'is';
+LIMITED: 'limited';
+LOOP: 'loop';
+MOD: 'mod';
+NEW: 'new';
+NOT: 'not';
+NULL: 'null';
+OF: 'of';
+OR: 'or';
+OTHERS: 'others';
+OUT: 'out';
+OVERRIDING: 'overriding';
+PACKAGE: 'package';
+PRAGMA: 'pragma';
+PRIVATE: 'private';
+PROCEDURE: 'procedure';
+PROTECTED: 'protected';
+RAISE: 'raise';
+RANGE: 'range';
+RECORD: 'record';
+REM: 'rem';
+RENAMES: 'renames';
+REQUEUE: 'requeue';
 RETURN: 'return';
+REVERSE: 'reverse';
+SELECT: 'select';
+SEPARATE: 'separate';
+SOME: 'some';
+SUBTYPE: 'subtype';
+SYNCHRONIZED: 'synchronized';
+TAGGED: 'tagged';
+TASK: 'task';
+TERMINATE: 'terminate';
 THEN: 'then';
+TYPE: 'type';
+UNTIL: 'until';
+USE: 'use';
+WHEN: 'when';
 WHILE: 'while';
+WITH: 'with';
+XOR: 'xor';
 
 /* Identifiers */
 ID: [a-zA-Z] [a-zA-Z0-9_]*;
@@ -40,9 +91,6 @@ LT: '<';
 GT: '>';
 LTE: '<=';
 GTE: '>=';
-AND: 'and';
-OR: 'or';
-NOT: 'not';
 
 /* Punctuation */
 COMMA: ',';
@@ -74,8 +122,7 @@ WS: [ \t\r\n]+ -> skip;
 
 program: statementList;
 
-statementList: statement+
-    ;
+statementList: statement+;
 
 statement: assignment
          | procedureCall
