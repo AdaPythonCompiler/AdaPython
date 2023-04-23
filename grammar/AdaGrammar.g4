@@ -328,22 +328,18 @@ target : ID;
 
 procedure_call_statement : ID LPAREN (actual_parameter (COMMA actual_parameter)*)? RPAREN SEMICOLON;
 
-compound_statement : sequence_of_statements;
 
 sequence_of_statements : statement (SEMICOLON statement)*;
 
 statement : 
     simple_statement 
-    | compound_statement 
     | if_statement 
     | case_statement 
     | loop_statement 
-    | block_statement 
     | exit_statement 
     | return_statement 
-    | null_statement 
-    | raise_statement 
-    | goto_statement;
+    | goto_statement
+    | null_statement ;
 
 simple_statement : 
     assignment_statement 
@@ -381,9 +377,13 @@ while_loop : WHILE condition LOOP sequence_of_statements END LOOP SEMICOLON;
 
 begin_end_block : BEGIN sequence_of_statements END SEMICOLON;
 
-block_statement : block_declarative_item* BEGIN sequence_of_statements END SEMICOLON;
+exit_statement : EXIT ID? WHEN condition? SEMICOLON;
 
-block_declarative_item :
+return_statement : RETURN expression? SEMICOLON;
+
+goto_statement : GOTO ID SEMICOLON;
+
+null_statement : NULL SEMICOLON;
 
 
 
