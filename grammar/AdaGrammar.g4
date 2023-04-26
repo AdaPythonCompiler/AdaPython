@@ -90,6 +90,7 @@ INT: [0-9]+;
 FLOAT: [0-9]+ '.' [0-9]+;
 CHAR: '\'' . '\'';
 STRING: '"' .*? '"';
+BOOL: 'true' | 'false';
 
 /* Comments */
 LINE_COMMENT: '--' .? '\n' -> skip;
@@ -247,7 +248,7 @@ variable_declaration : ID COLON subtype_mark ASSIGN expression SEMICOLON;
 
 expression : relation (AND relation | AND THEN relation | OR relation | OR ELSE relation | XOR relation )*;
 
-relation: simple_expression (relational_operator | simple_expression)?;
+relation: (simple_expression | BOOL) (relational_operator | simple_expression)?;
 
 relational_operator: 
     EQUALS | 
@@ -260,8 +261,10 @@ relational_operator:
 simple_expression: term ((unary_adding_operator | binary_adding_operator) term)*;
 
 unary_adding_operator: 
-    SUB 
-    | ADD;
+    ADD 
+    | SUB 
+    | ABS 
+    | NOT;
 
 binary_adding_operator:  
     ADD 
@@ -323,6 +326,7 @@ if_statement : IF condition THEN sequence_of_statements (ELSIF condition THEN se
 
 condition : expression;
 
+
 case_statement : CASE expression IS case_statement_alternative (case_statement_alternative)* END CASE SEMICOLON;
 
 case_statement_alternative : WHEN (choice_list | OTHERS) ARROW sequence_of_statements;
@@ -356,10 +360,3 @@ exit_statement : EXIT ID? WHEN condition? SEMICOLON;
 return_statement : RETURN expression? SEMICOLON;
 
 null_statement : NULL SEMICOLON;
-
-
-
-
-
-
-
