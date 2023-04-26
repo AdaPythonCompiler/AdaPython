@@ -261,9 +261,8 @@ simple_expression: term ((unary_adding_operator | binary_adding_operator) term)*
 
 unary_adding_operator: 
     ADD 
-    | SUB 
-    | ABS 
-    | NOT;
+    | SUB
+    ;
 
 binary_adding_operator:  
     ADD 
@@ -272,7 +271,10 @@ binary_adding_operator:
 
 term: factor ((MUL | DIV) factor)*;
 
-factor: primary (POW primary)*;
+factor: primary (POW primary)*
+    | ABS primary
+    | NOT primary
+    ;
 
 primary: 
     ID 
@@ -288,7 +290,6 @@ primary:
     | aggregate 
     | qualified_expression 
     | function_call;
-
 
 aggregate : LPAREN (element_association (COMMA element_association)*)? RPAREN;
 
@@ -324,7 +325,6 @@ simple_statement :
 if_statement : IF condition THEN sequence_of_statements (ELSIF condition THEN sequence_of_statements)* (ELSE sequence_of_statements)? END IF SEMICOLON;
 
 condition : expression;
-
 
 case_statement : CASE expression IS case_statement_alternative (case_statement_alternative)* END CASE SEMICOLON;
 
