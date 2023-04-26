@@ -90,7 +90,6 @@ INT: [0-9]+;
 FLOAT: [0-9]+ '.' [0-9]+;
 CHAR: '\'' . '\'';
 STRING: '"' .*? '"';
-BOOL: 'true' | 'false';
 
 /* Comments */
 LINE_COMMENT: '--' .? '\n' -> skip;
@@ -248,7 +247,7 @@ variable_declaration : ID COLON subtype_mark ASSIGN expression SEMICOLON;
 
 expression : relation (AND relation | AND THEN relation | OR relation | OR ELSE relation | XOR relation )*;
 
-relation: (simple_expression | BOOL) (relational_operator | simple_expression)?;
+relation: simple_expression (relational_operator | simple_expression)?;
 
 relational_operator: 
     EQUALS | 
