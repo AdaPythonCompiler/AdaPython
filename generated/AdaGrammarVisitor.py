@@ -1,9 +1,9 @@
-# Generated from grammar/AdaGrammar.g4 by ANTLR 4.12.0
+# Generated from AdaGrammar.g4 by ANTLR 4.12.0
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .AdaGrammarParser import AdaGrammarParser
 else:
-    from generated.AdaGrammarParser import AdaGrammarParser
+    from AdaGrammarParser import AdaGrammarParser
 
 # This class defines a complete generic visitor for a parse tree produced by AdaGrammarParser.
 
