@@ -3,12 +3,8 @@ grammar AdaGrammar;
 /* TOKENS */
 
 /* Keywords from book*/
-ABORT: 'abort';
 ABS: 'abs';
-ABSTRACT: 'abstract';
-ACCEPT: 'accept';
 ACCESS: 'access';
-ALIASED: 'aliased';
 ALL: 'all';
 AND: 'and';
 ARRAY: 'array';
@@ -18,23 +14,15 @@ BODY: 'body';
 CASE: 'case';
 CONSTANT: 'constant';
 DECLARE: 'declare';
-DELAY: 'delay';
-DELTA: 'delta';
-DIGITS: 'digits';
 DO: 'do';
 ELSE: 'else';
 ELSIF: 'elsif';
 END: 'end';
-ENTRY: 'entry';
-EXCEPTION: 'exception';
 EXIT: 'exit';
 FOR: 'for';
 FUNCTION: 'function';
-GENERIC: 'generic';
-GOTO: 'goto';
 IF: 'if';
 IN: 'in';
-INTERFACE: 'interface';
 IS: 'is';
 LIMITED: 'limited';
 LOOP: 'loop';
@@ -45,32 +33,20 @@ NULL: 'null';
 OF: 'of';
 OR: 'or';
 OTHERS: 'others';
-OUT: 'out';
-OVERRIDING: 'overriding';
 PACKAGE: 'package';
 PRAGMA: 'pragma';
 PRIVATE: 'private';
 PROCEDURE: 'procedure';
 PROTECTED: 'protected';
-RAISE: 'raise';
 RANGE: 'range';
 RECORD: 'record';
-REM: 'rem';
-RENAMES: 'renames';
-REQUEUE: 'requeue';
 RETURN: 'return';
 REVERSE: 'reverse';
-SELECT: 'select';
-SEPARATE: 'separate';
-SOME: 'some';
 SUBTYPE: 'subtype';
-SYNCHRONIZED: 'synchronized';
 TAGGED: 'tagged';
 TASK: 'task';
-TERMINATE: 'terminate';
 THEN: 'then';
 TYPE: 'type';
-UNTIL: 'until';
 USE: 'use';
 WHEN: 'when';
 WHILE: 'while';
@@ -328,7 +304,6 @@ target : ID;
 
 procedure_call_statement : ID LPAREN (actual_parameter (COMMA actual_parameter)*)? RPAREN SEMICOLON;
 
-
 sequence_of_statements : statement (SEMICOLON statement)*;
 
 statement : 
@@ -338,7 +313,6 @@ statement :
     | loop_statement 
     | exit_statement 
     | return_statement 
-    | goto_statement
     | null_statement ;
 
 simple_statement : 
@@ -380,8 +354,6 @@ begin_end_block : BEGIN sequence_of_statements END SEMICOLON;
 exit_statement : EXIT ID? WHEN condition? SEMICOLON;
 
 return_statement : RETURN expression? SEMICOLON;
-
-goto_statement : GOTO ID SEMICOLON;
 
 null_statement : NULL SEMICOLON;
 
