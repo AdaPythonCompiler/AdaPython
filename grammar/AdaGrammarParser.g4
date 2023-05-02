@@ -8,10 +8,6 @@ program:
     (package_declaration
     | subprogram_declaration 
     | subprogram_body 
-    | task_declaration 
-    | task_body 
-    | protected_type_declaration 
-    | protected_type_body 
     | subunit)*
     ;
 
@@ -19,10 +15,6 @@ package_declaration: PACKAGE ID IS
     (package_declaration 
     | subprogram_declaration 
     | subprogram_body 
-    | task_declaration 
-    | task_body 
-    | protected_type_declaration 
-    | protected_type_body 
     | subunit)* END ID SEMICOLON
     ;
 
@@ -32,10 +24,6 @@ subprogram_specification: subprogram_head IS
     (subprogram_specification 
     | subprogram_declaration 
     | subprogram_body 
-    | task_declaration 
-    | task_body 
-    | protected_type_declaration 
-    | protected_type_body 
     | subunit)* END ID SEMICOLON
     ;
 
@@ -47,62 +35,13 @@ subprogram_body: subprogram_specification IS
     (subprogram_specification 
     | subprogram_declaration 
     | subprogram_body 
-    | task_declaration 
-    | task_body 
-    | protected_type_declaration 
-    | protected_type_body 
-    | subunit)* END ID SEMICOLON
-    ;
-
-task_declaration: TASK ID IS 
-    (task_declaration 
-    | task_body 
-    | subprogram_declaration 
-    | subprogram_body 
-    | protected_type_declaration 
-    | protected_type_body 
-    | subunit)* END ID SEMICOLON
-    ;
-
-task_body: task_declaration IS 
-    (task_declaration  
-    | task_body 
-    | subprogram_declaration 
-    | subprogram_body   
-    | protected_type_declaration    
-    | protected_type_body 
-    | subunit)* END ID SEMICOLON
-    ;
-
-protected_type_declaration: PROTECTED TYPE ID IS 
-    (protected_type_declaration 
-    | protected_type_body 
-    | subprogram_declaration 
-    | subprogram_body 
-    | task_declaration 
-    | task_body 
-    | subunit)* END ID SEMICOLON
-    ;
-
-protected_type_body: protected_type_declaration IS 
-    (protected_type_declaration 
-    | protected_type_body 
-    | subprogram_declaration    
-    | subprogram_body 
-    | task_declaration 
-    | task_body 
     | subunit)* END ID SEMICOLON
     ;
 
 subunit: 
     subprogram_declaration 
     | subprogram_body 
-    | task_declaration 
-    | task_body 
-    | protected_type_declaration 
-    | protected_type_body
     ;
-
 
 
 type_declaration : TYPE ID IS type_definition SEMICOLON;
@@ -111,10 +50,6 @@ type_definition :
     enumeration_type_definition 
     | array_type_definition 
     | record_type_definition 
-    | access_type_definition 
-    | protected_type_definition 
-    | tagged_type_definition 
-    | limited_type_definition 
     | subtype_definition;
 
 enumeration_type_definition : LPAREN ID (COMMA ID)* RPAREN;
@@ -132,14 +67,6 @@ record_type_definition : RECORD component_list END RECORD;
 component_list : component_declaration (SEMICOLON component_declaration)*;
 
 component_declaration : ID COLON subtype_mark;
-
-access_type_definition : ACCESS subtype_mark;
-
-protected_type_definition : PROTECTED type_definition;
-
-tagged_type_definition : TAGGED type_definition;
-
-limited_type_definition : LIMITED type_definition;
 
 subtype_definition : subtype_indication;
 
