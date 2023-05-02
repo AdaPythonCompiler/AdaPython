@@ -1,4 +1,4 @@
-# Generated from AdaGrammar.g4 by ANTLR 4.12.0
+# Generated from AdaGrammarLexer.g4 by ANTLR 4.12.0
 from antlr4 import *
 from io import StringIO
 import sys
@@ -338,7 +338,7 @@ class AdaGrammarLexer(Lexer):
                   "FLOAT", "CHAR", "STRING", "LINE_COMMENT", "BLOCK_COMMENT", 
                   "WS" ]
 
-    grammarFileName = "AdaGrammar.g4"
+    grammarFileName = "AdaGrammarLexer.g4"
 
     def __init__(self, input=None, output:TextIO = sys.stdout):
         super().__init__(input, output)

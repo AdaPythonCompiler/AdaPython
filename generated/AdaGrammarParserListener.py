@@ -1,4 +1,4 @@
-# Generated from AdaGrammar.g4 by ANTLR 4.12.0
+# Generated from AdaGrammarParser.g4 by ANTLR 4.12.0
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .AdaGrammarParser import AdaGrammarParser
@@ -6,7 +6,7 @@ else:
     from AdaGrammarParser import AdaGrammarParser
 
 # This class defines a complete listener for a parse tree produced by AdaGrammarParser.
-class AdaGrammarListener(ParseTreeListener):
+class AdaGrammarParserListener(ParseTreeListener):
 
     # Enter a parse tree produced by AdaGrammarParser#program.
     def enterProgram(self, ctx:AdaGrammarParser.ProgramContext):
