@@ -19,6 +19,16 @@ class AdaGrammarParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by AdaGrammarParser#package_import.
+    def visitPackage_import(self, ctx:AdaGrammarParser.Package_importContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by AdaGrammarParser#package_use.
+    def visitPackage_use(self, ctx:AdaGrammarParser.Package_useContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by AdaGrammarParser#subprogram_declaration.
     def visitSubprogram_declaration(self, ctx:AdaGrammarParser.Subprogram_declarationContext):
         return self.visitChildren(ctx)
@@ -41,26 +51,6 @@ class AdaGrammarParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by AdaGrammarParser#subprogram_body.
     def visitSubprogram_body(self, ctx:AdaGrammarParser.Subprogram_bodyContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by AdaGrammarParser#task_declaration.
-    def visitTask_declaration(self, ctx:AdaGrammarParser.Task_declarationContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by AdaGrammarParser#task_body.
-    def visitTask_body(self, ctx:AdaGrammarParser.Task_bodyContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by AdaGrammarParser#protected_type_declaration.
-    def visitProtected_type_declaration(self, ctx:AdaGrammarParser.Protected_type_declarationContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by AdaGrammarParser#protected_type_body.
-    def visitProtected_type_body(self, ctx:AdaGrammarParser.Protected_type_bodyContext):
         return self.visitChildren(ctx)
 
 
@@ -116,26 +106,6 @@ class AdaGrammarParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by AdaGrammarParser#component_declaration.
     def visitComponent_declaration(self, ctx:AdaGrammarParser.Component_declarationContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by AdaGrammarParser#access_type_definition.
-    def visitAccess_type_definition(self, ctx:AdaGrammarParser.Access_type_definitionContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by AdaGrammarParser#protected_type_definition.
-    def visitProtected_type_definition(self, ctx:AdaGrammarParser.Protected_type_definitionContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by AdaGrammarParser#tagged_type_definition.
-    def visitTagged_type_definition(self, ctx:AdaGrammarParser.Tagged_type_definitionContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by AdaGrammarParser#limited_type_definition.
-    def visitLimited_type_definition(self, ctx:AdaGrammarParser.Limited_type_definitionContext):
         return self.visitChildren(ctx)
 
 

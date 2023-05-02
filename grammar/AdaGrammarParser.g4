@@ -5,7 +5,8 @@ options {tokenVocab=AdaGrammarLexer;}
 /* Parser rules */
 
 program:
-    (package_declaration
+    (package_import
+    | package_declaration
     | subprogram_declaration 
     | subprogram_body 
     | subunit)*
@@ -17,6 +18,10 @@ package_declaration: PACKAGE ID IS
     | subprogram_body 
     | subunit)* END ID SEMICOLON
     ;
+
+package_import: WITH ID PERIOD ID SEMICOLON;
+
+package_use: USE ID PERIOD ID SEMICOLON;
 
 subprogram_declaration: subprogram_specification SEMICOLON;
 

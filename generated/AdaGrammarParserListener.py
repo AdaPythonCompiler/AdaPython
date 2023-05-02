@@ -26,6 +26,24 @@ class AdaGrammarParserListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by AdaGrammarParser#package_import.
+    def enterPackage_import(self, ctx:AdaGrammarParser.Package_importContext):
+        pass
+
+    # Exit a parse tree produced by AdaGrammarParser#package_import.
+    def exitPackage_import(self, ctx:AdaGrammarParser.Package_importContext):
+        pass
+
+
+    # Enter a parse tree produced by AdaGrammarParser#package_use.
+    def enterPackage_use(self, ctx:AdaGrammarParser.Package_useContext):
+        pass
+
+    # Exit a parse tree produced by AdaGrammarParser#package_use.
+    def exitPackage_use(self, ctx:AdaGrammarParser.Package_useContext):
+        pass
+
+
     # Enter a parse tree produced by AdaGrammarParser#subprogram_declaration.
     def enterSubprogram_declaration(self, ctx:AdaGrammarParser.Subprogram_declarationContext):
         pass
@@ -68,42 +86,6 @@ class AdaGrammarParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by AdaGrammarParser#subprogram_body.
     def exitSubprogram_body(self, ctx:AdaGrammarParser.Subprogram_bodyContext):
-        pass
-
-
-    # Enter a parse tree produced by AdaGrammarParser#task_declaration.
-    def enterTask_declaration(self, ctx:AdaGrammarParser.Task_declarationContext):
-        pass
-
-    # Exit a parse tree produced by AdaGrammarParser#task_declaration.
-    def exitTask_declaration(self, ctx:AdaGrammarParser.Task_declarationContext):
-        pass
-
-
-    # Enter a parse tree produced by AdaGrammarParser#task_body.
-    def enterTask_body(self, ctx:AdaGrammarParser.Task_bodyContext):
-        pass
-
-    # Exit a parse tree produced by AdaGrammarParser#task_body.
-    def exitTask_body(self, ctx:AdaGrammarParser.Task_bodyContext):
-        pass
-
-
-    # Enter a parse tree produced by AdaGrammarParser#protected_type_declaration.
-    def enterProtected_type_declaration(self, ctx:AdaGrammarParser.Protected_type_declarationContext):
-        pass
-
-    # Exit a parse tree produced by AdaGrammarParser#protected_type_declaration.
-    def exitProtected_type_declaration(self, ctx:AdaGrammarParser.Protected_type_declarationContext):
-        pass
-
-
-    # Enter a parse tree produced by AdaGrammarParser#protected_type_body.
-    def enterProtected_type_body(self, ctx:AdaGrammarParser.Protected_type_bodyContext):
-        pass
-
-    # Exit a parse tree produced by AdaGrammarParser#protected_type_body.
-    def exitProtected_type_body(self, ctx:AdaGrammarParser.Protected_type_bodyContext):
         pass
 
 
@@ -203,42 +185,6 @@ class AdaGrammarParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by AdaGrammarParser#component_declaration.
     def exitComponent_declaration(self, ctx:AdaGrammarParser.Component_declarationContext):
-        pass
-
-
-    # Enter a parse tree produced by AdaGrammarParser#access_type_definition.
-    def enterAccess_type_definition(self, ctx:AdaGrammarParser.Access_type_definitionContext):
-        pass
-
-    # Exit a parse tree produced by AdaGrammarParser#access_type_definition.
-    def exitAccess_type_definition(self, ctx:AdaGrammarParser.Access_type_definitionContext):
-        pass
-
-
-    # Enter a parse tree produced by AdaGrammarParser#protected_type_definition.
-    def enterProtected_type_definition(self, ctx:AdaGrammarParser.Protected_type_definitionContext):
-        pass
-
-    # Exit a parse tree produced by AdaGrammarParser#protected_type_definition.
-    def exitProtected_type_definition(self, ctx:AdaGrammarParser.Protected_type_definitionContext):
-        pass
-
-
-    # Enter a parse tree produced by AdaGrammarParser#tagged_type_definition.
-    def enterTagged_type_definition(self, ctx:AdaGrammarParser.Tagged_type_definitionContext):
-        pass
-
-    # Exit a parse tree produced by AdaGrammarParser#tagged_type_definition.
-    def exitTagged_type_definition(self, ctx:AdaGrammarParser.Tagged_type_definitionContext):
-        pass
-
-
-    # Enter a parse tree produced by AdaGrammarParser#limited_type_definition.
-    def enterLimited_type_definition(self, ctx:AdaGrammarParser.Limited_type_definitionContext):
-        pass
-
-    # Exit a parse tree produced by AdaGrammarParser#limited_type_definition.
-    def exitLimited_type_definition(self, ctx:AdaGrammarParser.Limited_type_definitionContext):
         pass
 
 
