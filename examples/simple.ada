@@ -16,10 +16,11 @@ begin
 end Greet;
 
 procedure Main is
-    I : Integer := 1;
+   I : Integer := 1;
 begin
-    while I <= 10 loop
-        Put_Line("Hello, world!");
-        I := I + 1;
-    end loop;
+   while I <= 10 loop
+      Put_Line("Hello, world!");
+      I := I + 1;
+   end loop;
+   Put_Line("Hello, world!");
 end Main;

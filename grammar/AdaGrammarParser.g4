@@ -36,7 +36,7 @@ statement :
     (simple_statement
     | if_statement
     | loop_statement 
-    // | case_statement 
+    //| case_statement 
     // | exit_statement 
     // | return_statement 
     // | null_statement
@@ -60,6 +60,11 @@ for_loop : FOR ID IN range LOOP (statement)* END LOOP SEMICOLON;
 range : simple_expression RANGE BOX simple_expression;
 
 while_loop : WHILE expression LOOP (statement)* END LOOP SEMICOLON;
+
+//case_statement : CASE expression IS (case_statement_alternative)* END CASE SEMICOLON;
+
+//case_statement_alternative : WHEN expression ARROW (statement)*;
+
 
 simple_statement : 
     assignment_statement 

@@ -67,7 +67,10 @@ class AdaVisitor(AdaGrammarParserVisitor):
 
     def visitIf_statement(self, ctx):
         print("If_statement")
-        self.write("if " + ctx.getChild(1).getText() + ":")
+        buf = ctx.getChild(1).getText()
+        if "=" in buf:
+            buf = buf.replace("=", "==")
+        self.write("if " +  buf + ":")
         self.tab_count += 1
         self.visitChildren(ctx)
         self.tab_count -= 1
@@ -122,7 +125,6 @@ class AdaVisitor(AdaGrammarParserVisitor):
             self.write("print(" + ctx.getChild(2).getText() + ")")
         
         return super().visitProcedure_call_statement(ctx)
-
     def visitLoop_statement(self, ctx):
         print("Loop_statement")
         self.tab_count += 1
@@ -133,7 +135,16 @@ class AdaVisitor(AdaGrammarParserVisitor):
     def visitWhile_loop(self, ctx):
         print("While_loop")
         self.write("while " + ctx.getChild(1).getText() + ":")
+        self.tab_count += 1
         self.visitChildren(ctx)
+        self.tab_count -= 1
+
+    def visitAssignment_statement(self, ctx):
+        print("Assignment_statement")
+        self.write(ctx.getChild(0).getText() + " " + self.operators_map[ctx.getChild(1).getText()] + " " + ctx.getChild(2).getText())
+        self.visitChildren(ctx)
+    
+    
 
 def main():
     
