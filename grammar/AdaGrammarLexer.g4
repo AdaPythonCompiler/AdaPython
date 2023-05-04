@@ -44,7 +44,11 @@ WHEN: 'when';
 WHILE: 'while';
 WITH: 'with';
 XOR: 'xor';
-
+INT_TYPE: 'Integer';
+FLOAT_TYPE: 'Float';
+CHAR_TYPE: 'Char';
+STRING_TYPE: 'String';
+BOOLEAN_TYPE: 'Boolean';
 /* Identifiers */
 ID: [a-zA-Z] [a-zA-Z0-9_]*;
 

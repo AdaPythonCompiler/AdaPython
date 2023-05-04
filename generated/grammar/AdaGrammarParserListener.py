@@ -1,4 +1,4 @@
-# Generated from AdaGrammarParser.g4 by ANTLR 4.12.0
+# Generated from grammar/AdaGrammarParser.g4 by ANTLR 4.12.0
 from antlr4 import *
 if __name__ is not None and "." in __name__:
     from .AdaGrammarParser import AdaGrammarParser
@@ -113,24 +113,6 @@ class AdaGrammarParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by AdaGrammarParser#if_statement.
     def exitIf_statement(self, ctx:AdaGrammarParser.If_statementContext):
-        pass
-
-
-    # Enter a parse tree produced by AdaGrammarParser#elsif_statement.
-    def enterElsif_statement(self, ctx:AdaGrammarParser.Elsif_statementContext):
-        pass
-
-    # Exit a parse tree produced by AdaGrammarParser#elsif_statement.
-    def exitElsif_statement(self, ctx:AdaGrammarParser.Elsif_statementContext):
-        pass
-
-
-    # Enter a parse tree produced by AdaGrammarParser#else_statement.
-    def enterElse_statement(self, ctx:AdaGrammarParser.Else_statementContext):
-        pass
-
-    # Exit a parse tree produced by AdaGrammarParser#else_statement.
-    def exitElse_statement(self, ctx:AdaGrammarParser.Else_statementContext):
         pass
 
 
