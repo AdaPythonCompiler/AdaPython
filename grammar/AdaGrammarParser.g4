@@ -4,82 +4,54 @@ options {tokenVocab=AdaGrammarLexer;}
 
 /* Parser rules */
 
-program:
-    (package_import
-    | package_declaration
-    | subprogram_declaration 
-    | subprogram_body 
-    | subunit)*
-    ;
+program: (
+    package_import
+    | package_use
+    | program_declaration
+)*;
 
-package_declaration: PACKAGE ID IS 
-    (package_declaration 
-    | subprogram_declaration 
-    | subprogram_body 
-    | subunit)* END ID SEMICOLON
-    ;
+
+program_declaration: program_head IS (
+    // | program_declaration
+    variable_declaration
+    | full_variable_declaration
+)* begin_end_block?;
+
+variable_declaration: ID COLON type SEMICOLON;
+
+full_variable_declaration: ID COLON type ASSIGN expression SEMICOLON;
+
+type: INT | FLOAT | CHAR | STRING | ID;
 
 package_import: WITH ID PERIOD ID SEMICOLON;
 
 package_use: USE ID PERIOD ID SEMICOLON;
 
-subprogram_declaration: subprogram_specification SEMICOLON;
+input_vars: LPAREN (ID COLON ID (COMMA ID COLON ID)*)? RPAREN;
 
-subprogram_specification: subprogram_head IS 
-    (subprogram_specification 
-    | subprogram_declaration 
-    | subprogram_body 
-    | subunit)* END ID SEMICOLON
+program_head: PROCEDURE ID input_vars? | FUNCTION ID input_vars? RETURN ID;
+
+begin_end_block : BEGIN (statement)* END ID SEMICOLON; // ID!!!
+
+statement : 
+    simple_statement 
+    // | if_statement 
+    // | case_statement 
+    //| loop_statement 
+    //| exit_statement 
+    //| return_statement 
+    //| null_statement
     ;
 
-subprogram_head: PROCEDURE ID formal_part? | FUNCTION ID formal_part? RETURN ID;
+simple_statement : 
+    assignment_statement 
+    | procedure_call_statement
+    //| function_call_statement
 
-formal_part: LPAREN (ID COLON ID (COMMA ID COLON ID)*)? RPAREN;
-
-subprogram_body: subprogram_specification IS 
-    (subprogram_specification 
-    | subprogram_declaration 
-    | subprogram_body 
-    | subunit)* END ID SEMICOLON
     ;
+procedure_call_statement : ID LPAREN (expression (COMMA expression)*)? RPAREN SEMICOLON;
 
-subunit: 
-    subprogram_declaration 
-    | subprogram_body 
-    ;
-
-
-type_declaration : TYPE ID IS type_definition SEMICOLON;
-
-type_definition : 
-    enumeration_type_definition 
-    | array_type_definition 
-    | record_type_definition 
-    | subtype_definition;
-
-enumeration_type_definition : LPAREN ID (COMMA ID)* RPAREN;
-
-array_type_definition : ARRAY LPAREN index_subtype_definition (COMMA index_subtype_definition)* RPAREN OF component_subtype_definition;
-
-index_subtype_definition : subtype_mark RANGE BOX;
-
-subtype_mark : ID;
-
-component_subtype_definition : subtype_mark;
-
-record_type_definition : RECORD component_list END RECORD;
-
-component_list : component_declaration (SEMICOLON component_declaration)*;
-
-component_declaration : ID COLON subtype_mark;
-
-subtype_definition : subtype_indication;
-
-subtype_indication : subtype_mark (RANGE BOX)?;
-
-constant_declaration : CONSTANT ID COLON subtype_mark ASSIGN expression SEMICOLON;
-
-variable_declaration : ID COLON subtype_mark ASSIGN expression SEMICOLON;
+assignment_statement : ID ASSIGN expression SEMICOLON;
 
 expression : relation (AND relation | AND THEN relation | OR relation | OR ELSE relation | XOR relation )*;
 
@@ -121,7 +93,7 @@ primary:
     | LPAREN expression RPAREN 
     | NOT primary 
     | ABS primary 
-    | NEW subtype_mark 
+    | NEW ID 
     | NULL 
     | aggregate 
     | qualified_expression 
@@ -129,69 +101,35 @@ primary:
 
 aggregate : LPAREN (element_association (COMMA element_association)*)? RPAREN;
 
-element_association : expression (ARROW expression)?;
-
 qualified_expression : ID PERIOD ID;
 
-function_call : ID LPAREN (actual_parameter (COMMA actual_parameter)*)? RPAREN;
+function_call : ID LPAREN (expression (COMMA expression)*)? RPAREN;
 
-actual_parameter : expression;
+element_association : expression (ARROW expression)?;
 
-assignment_statement : target ASSIGN expression SEMICOLON;
 
-target : ID;
+// function Sum (A : Integer, B : Integer) return Integer is
+// -- This function takes two integers as input and returns their sum
+// begin
+//     return A + B;
+// end Sum;
 
-procedure_call_statement : ID LPAREN (actual_parameter (COMMA actual_parameter)*)? RPAREN SEMICOLON;
 
-sequence_of_statements : statement (SEMICOLON statement)*;
+// procedure Main is
+//    --  Variable declarations
+//    A, B : Integer := 0;
+//    C    : Integer := 100;
+//    D    : Integer;
+// begin
+//    --  Ada uses a regular assignment statement for incrementation.
+//    A := A + 1;
 
-statement : 
-    simple_statement 
-    | if_statement 
-    | case_statement 
-    | loop_statement 
-    | exit_statement 
-    | return_statement 
-    | null_statement ;
+//    --  Regular addition
+//    D := A + B + C;
+// end Main;
 
-simple_statement : 
-    assignment_statement 
-    | procedure_call_statement;
 
-if_statement : IF condition THEN sequence_of_statements (ELSIF condition THEN sequence_of_statements)* (ELSE sequence_of_statements)? END IF SEMICOLON;
-
-condition : expression;
-
-case_statement : CASE expression IS case_statement_alternative (case_statement_alternative)* END CASE SEMICOLON;
-
-case_statement_alternative : WHEN (choice_list | OTHERS) ARROW sequence_of_statements;
-
-choice_list : expression (COMMA expression)*;
-
-loop_statement : 
-    iteration_scheme 
-    | while_loop
-    | for_loop;
-
-iteration_scheme :
-    basic_loop 
-    | for_loop 
-    | while_loop;
-
-basic_loop : LOOP sequence_of_statements END LOOP SEMICOLON;
-
-for_loop : FOR ID IN discrete_range LOOP sequence_of_statements END LOOP SEMICOLON;
-
-discrete_range : range;
-
-range : simple_expression RANGE BOX simple_expression;
-
-while_loop : WHILE condition LOOP sequence_of_statements END LOOP SEMICOLON;
-
-begin_end_block : BEGIN sequence_of_statements END SEMICOLON;
-
-exit_statement : EXIT ID? WHEN condition? SEMICOLON;
-
-return_statement : RETURN expression? SEMICOLON;
-
-null_statement : NULL SEMICOLON;
+// procedure Proc
+//  (Var1 : Integer;
+//   Var2 : out Integer;
+//   Var3 : in out Integer);
