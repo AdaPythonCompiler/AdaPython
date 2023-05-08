@@ -36,7 +36,7 @@ statement :
     (simple_statement
     | if_statement
     | loop_statement 
-    //| case_statement 
+    | case_statement 
     // | exit_statement 
     // | return_statement 
     // | null_statement
@@ -57,13 +57,13 @@ basic_loop : LOOP (statement)* END LOOP SEMICOLON;
 
 for_loop : FOR ID IN range LOOP (statement)* END LOOP SEMICOLON;
 
-range : simple_expression RANGE BOX simple_expression;
+range : simple_expression DOT_DOT simple_expression;
 
 while_loop : WHILE expression LOOP (statement)* END LOOP SEMICOLON;
 
-//case_statement : CASE expression IS (case_statement_alternative)* END CASE SEMICOLON;
+case_statement : CASE expression IS (case_statement_alternative)* END CASE SEMICOLON;
 
-//case_statement_alternative : WHEN expression ARROW (statement)*;
+case_statement_alternative : WHEN expression ARROW (statement)*;
 
 
 simple_statement : 
@@ -119,7 +119,8 @@ primary:
     | NULL 
     | aggregate 
     | qualified_expression 
-    | function_call;
+    | function_call
+    | OTHERS;
 
 aggregate : LPAREN (element_association (COMMA element_association)*)? RPAREN;
 
@@ -128,52 +129,3 @@ qualified_expression : ID PERIOD ID;
 function_call : ID LPAREN (expression (COMMA expression)*)? RPAREN;
 
 element_association : expression (ARROW expression)?;
-
-
-// function Sum (A : Integer, B : Integer) return Integer is
-// -- This function takes two integers as input and returns their sum
-// begin
-//     return A + B;
-// end Sum;
-
-
-// procedure Main is
-//    --  Variable declarations
-//    A, B : Integer := 0;
-//    C    : Integer := 100;
-//    D    : Integer;
-// begin
-//    --  Ada uses a regular assignment statement for incrementation.
-//    A := A + 1;
-
-//    --  Regular addition
-//    D := A + B + C;
-// end Main;
-
-
-// procedure Proc
-//  (Var1 : Integer;
-//   Var2 : out Integer;
-//   Var3 : in out Integer);
-
-// with Ada.Text_IO;         use Ada.Text_IO;
-// with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
-
-// procedure Check_Positive is
-//    N : Integer;
-// begin
-//    --  Put a String
-//    Put ("Enter an integer value: ");
-
-//    --  Reads in an integer value
-//    Get (N);
-
-//    --  Put an Integer
-//    Put (N);
-
-//    if N > 0 then
-//       Put_Line (" is a positive number");
-//    else
-//       Put_Line (" is not a positive number");
-//    end if;
-// end Check_Positive;

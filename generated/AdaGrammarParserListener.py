@@ -179,6 +179,24 @@ class AdaGrammarParserListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by AdaGrammarParser#case_statement.
+    def enterCase_statement(self, ctx:AdaGrammarParser.Case_statementContext):
+        pass
+
+    # Exit a parse tree produced by AdaGrammarParser#case_statement.
+    def exitCase_statement(self, ctx:AdaGrammarParser.Case_statementContext):
+        pass
+
+
+    # Enter a parse tree produced by AdaGrammarParser#case_statement_alternative.
+    def enterCase_statement_alternative(self, ctx:AdaGrammarParser.Case_statement_alternativeContext):
+        pass
+
+    # Exit a parse tree produced by AdaGrammarParser#case_statement_alternative.
+    def exitCase_statement_alternative(self, ctx:AdaGrammarParser.Case_statement_alternativeContext):
+        pass
+
+
     # Enter a parse tree produced by AdaGrammarParser#simple_statement.
     def enterSimple_statement(self, ctx:AdaGrammarParser.Simple_statementContext):
         pass

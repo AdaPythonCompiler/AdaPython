@@ -104,6 +104,16 @@ class AdaGrammarParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by AdaGrammarParser#case_statement.
+    def visitCase_statement(self, ctx:AdaGrammarParser.Case_statementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by AdaGrammarParser#case_statement_alternative.
+    def visitCase_statement_alternative(self, ctx:AdaGrammarParser.Case_statement_alternativeContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by AdaGrammarParser#simple_statement.
     def visitSimple_statement(self, ctx:AdaGrammarParser.Simple_statementContext):
         return self.visitChildren(ctx)

@@ -37,8 +37,11 @@ class AdaVisitor(AdaGrammarParserVisitor):
         "Boolean": False,
     }
 
-    def write(self, text):
-        self.out_file.write(self.tab_count * "\t" + text + "\n")
+    def write(self, text, new_line=True):
+        if new_line:
+            self.out_file.write(self.tab_count * "\t" + text + "\n")
+        else:
+            self.out_file.write(self.tab_count * "\t" + text)
 
     def __init__(self):
         self.out_file = open("python.py", "w")
@@ -51,7 +54,11 @@ class AdaVisitor(AdaGrammarParserVisitor):
     
     def visitProgram_declaration(self, ctx):
         print("Program_declaration")
-        return super().visitProgram_declaration(ctx)
+        self.write("def " + ctx.program_head().getText() + "():")
+        self.tab_count += 1
+        self.visitChildren(ctx)
+        self.tab_count -= 1
+        # return self.visitChildren(ctx)
         
     def visitVariable_declaration(self, ctx):
         print("Variable_declaration")
@@ -60,25 +67,33 @@ class AdaVisitor(AdaGrammarParserVisitor):
     
     def visitExpression(self, ctx):
         print("Expression")
-        if ctx.getChildCount() == 1:
-            return self.visitChildren(ctx)
-            
-
+        return super().visitExpression(ctx)
 
     def visitIf_statement(self, ctx):
         print("If_statement")
         buf = ctx.getChild(1).getText()
-        if "=" in buf:
-            buf = buf.replace("=", "==")
+        for key in self.operators_map:
+            if key in buf:
+                buf = buf.replace(key, self.operators_map[key])
         self.write("if " +  buf + ":")
         self.tab_count += 1
-        self.visitChildren(ctx)
+        for i in ctx.statement():
+            self.visit(i)
         self.tab_count -= 1
-    
+        # if ctx.getChildCount() > 7:
+        #     self.visit(ctx.getChild(4))
+        #     self.visit(ctx.getChild(5))
+        for i in ctx.elsif_statement():
+            self.visit(i)
+        self.visit(ctx.else_statement())
+
     def visitElsif_statement(self, ctx):
         print("Elsif_statement")
-        self.tab_count -= 1
-        self.write("elif " + ctx.getChild(1).getText() + ":")
+        buf = ctx.getChild(1).getText()
+        for key in self.operators_map:
+            if key in buf:
+                buf = buf.replace(key, self.operators_map[key])
+        self.write("elif " + buf + ":")
         self.tab_count += 1
         self.visitChildren(ctx)
         self.tab_count -= 1
@@ -93,16 +108,14 @@ class AdaVisitor(AdaGrammarParserVisitor):
     def visitAssignment_statement(self, ctx):
         print("Assignment_statement")
         return super().visitAssignment_statement(ctx)
-
-    def visitLoop_statement(self, ctx):
-        print("Loop_statement")
-        return super().visitLoop_statement(ctx)
     
     def visitType_declaration(self, ctx):
         print("Type_declaration")
         return self.visitChildren(ctx)
+    
     def visitBegin_end_block(self, ctx):
         return super().visitBegin_end_block(ctx)
+    
     def visitPackage_import(self, ctx):
         print("Package_import")
         return super().visitPackage_import(ctx)
@@ -125,12 +138,10 @@ class AdaVisitor(AdaGrammarParserVisitor):
             self.write("print(" + ctx.getChild(2).getText() + ")")
         
         return super().visitProcedure_call_statement(ctx)
+    
     def visitLoop_statement(self, ctx):
         print("Loop_statement")
-        self.tab_count += 1
         self.visitChildren(ctx)
-        self.tab_count -= 1
-
 
     def visitWhile_loop(self, ctx):
         print("While_loop")
@@ -143,8 +154,43 @@ class AdaVisitor(AdaGrammarParserVisitor):
         print("Assignment_statement")
         self.write(ctx.getChild(0).getText() + " " + self.operators_map[ctx.getChild(1).getText()] + " " + ctx.getChild(2).getText())
         self.visitChildren(ctx)
+
+    def visitFor_loop(self, ctx):
+        print("For_loop")
+        self.write("for " + ctx.getChild(1).getText() + " in ", False)
+        self.visit(ctx.range_())
+        self.tab_count += 1
+        for i in ctx.statement():
+            self.visit(i)
+        self.tab_count -= 1
+        
+    def visitRange(self, ctx):
+        print("Range")
+        self.write('range(' + ctx.getChild(0).getText() + ", " + ctx.getChild(2).getText() + "):")
+
+
+    def visitBasic_loop(self, ctx):
+        print("Basic_loop")
+        self.write("while True:")
+        self.tab_count += 1
+        self.visitChildren(ctx)
+        self.tab_count -= 1
     
-    
+    def visitCase_statement(self, ctx):
+        print("Case_statement")
+        x = 0
+        for i in ctx.case_statement_alternative():
+            if x == 0:
+                self.write('if ' + ctx.getChild(1).getText() + ' == ' + i.expression().getText() + ':')
+                x = 1
+            elif i.getChild(1).getText() == 'others':
+                self.write('else:')
+            else:
+                self.write('elif ' + ctx.getChild(1).getText() + ' == ' + i.expression().getText() + ':')
+            self.tab_count += 1
+            self.visitChildren(i)
+            self.tab_count -= 1
+
 
 def main():
     

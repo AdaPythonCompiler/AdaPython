@@ -9,6 +9,8 @@ begin
       Put_Line("A is zero");
    elsif A > 0 then
       Put_Line("A is positive");
+   elsif A = 1 then
+      Put_Line("A is positive");
    else
       Put_Line("A is not zero");
    end if;
@@ -24,3 +26,26 @@ begin
    end loop;
    Put_Line("Hello, world!");
 end Main;
+
+procedure MainFor is
+begin
+   for I in 1 .. 10 loop
+      Put_Line("Hello, world!");
+   end loop;
+   Put_Line("Hello, world!");
+end MainFor;
+
+procedure MainCase is
+   I : Integer := 1;
+begin
+   case I is
+      when 1 =>
+         Put_Line("I is 1");
+      when 2 =>
+         Put_Line("I is 2");
+      when 3 =>
+         Put_Line("I is 3");
+      when others =>
+         Put_Line("I is others");
+   end case;
+end MainCase;
