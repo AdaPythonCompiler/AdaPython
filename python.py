@@ -17,7 +17,7 @@ def procedureMain():
 		I = I+1
 	print("Hello, world!")
 def procedureMainFor():
-	for I in 	range(1, 10):
+	for I in range(1, 10):
 		print("Hello, world!")
 	print("Hello, world!")
 def procedureMainCase():

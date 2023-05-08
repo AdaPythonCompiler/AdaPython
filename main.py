@@ -166,7 +166,8 @@ class AdaVisitor(AdaGrammarParserVisitor):
         
     def visitRange(self, ctx):
         print("Range")
-        self.write('range(' + ctx.getChild(0).getText() + ", " + ctx.getChild(2).getText() + "):")
+        self.out_file.write('range(' + ctx.getChild(0).getText() + ", " + ctx.getChild(2).getText() + "):" + "\n")
+        # self.write('range(' + ctx.getChild(0).getText() + ", " + ctx.getChild(2).getText() + "):")
 
 
     def visitBasic_loop(self, ctx):
