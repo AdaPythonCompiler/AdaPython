@@ -1,6 +1,5 @@
 import sys
 import PySimpleGUI as sg
-import time
 from antlr4 import *
 from generated.AdaGrammarLexer import AdaGrammarLexer
 from generated.AdaGrammarParser import AdaGrammarParser
@@ -50,9 +49,6 @@ class AdaVisitor(AdaGrammarParserVisitor):
         self.out_file.write("import sys\n")
         self.tab_count = 0
 
-    def get_file(self):
-        return self.out_file
-    
     def visitProgram(self, ctx):
         print("Program")
         return self.visitChildren(ctx)
@@ -199,70 +195,42 @@ class AdaVisitor(AdaGrammarParserVisitor):
 
 
 def main():
-    # input_stream = FileStream("examples/simple.ada")
-    # lexer = AdaGrammarLexer(input_stream)
-    # stream = CommonTokenStream(lexer)
-    # parser = AdaGrammarParser(stream)
-    # tree = parser.program()
-    # visitor = AdaVisitor()
-    # visitor.visit(tree)
-
-    # for i in tree.getChildren():
-    #     print(i.getText())
-    #     print("----")
-    
-    # s = tree.toStringTree(recog=parser)
-    # tab_count = 0
-    # for c in s:
-    #     if c == '(':
-    #         print(c)
-    #         tab_count += 1
-    #         print('\t' * tab_count, end='')
-    #     elif c == ')':
-    #         tab_count -= 1
-    #         print('\n', '\t' * tab_count, c, end='')
-    #         tab_count = max(tab_count, 0)  # nie pozwalamy na ujemną ilość tabulacji
-    #     else:
-    #         print(c, end='')
-    # print(tree.toStringTree(recog=parser))     
-    
-    layout = [[sg.Text('Wprowadź kod w języku Ada:', font=('Arial', 14))],
-          [sg.Multiline(key='-INPUT-', size=(80, 20),font=('Arial', 14))],
-          [sg.Button('Wykonaj', key='-EXECUTE-', size=(20, 3)),
-           sg.Button('Wyczyść', key='-CLEAR-', size=(20, 3))],
-          [sg.Text('Kod w języku Python:', font=('Arial', 14))],
-          [sg.Multiline(key='-OUTPUT-', size=(80, 20),font=('Arial', 14))]]
-    
+    layout = [[sg.Text('Your typed chars appear here:'), sg.Text('', key='_OUTPUT_')],
+                [sg.Input(do_not_clear=True, key='_IN_')],
+                [sg.Button('Show'), sg.Button('Exit')]]
     window = sg.Window('AdaToPython', layout)
-
     while True:  # Event Loop
-        event, values = window.read()
+        input_stream = FileStream("examples/simple.ada")
+        lexer = AdaGrammarLexer(input_stream)
+        stream = CommonTokenStream(lexer)
+        parser = AdaGrammarParser(stream)
+        tree = parser.program()
+        visitor = AdaVisitor()
+        visitor.visit(tree)
 
-        if event == sg.WIN_CLOSED or event == 'Exit':
-            break
-
-        if event == '-EXECUTE-':
-            input_stream = InputStream(values['-INPUT-'])
-
-            lexer = AdaGrammarLexer(input_stream)
-            stream = CommonTokenStream(lexer)
-            parser = AdaGrammarParser(stream)
-            tree = parser.program()
-            visitor = AdaVisitor()
-            visitor.visit(tree)
-            visitor.out_file.close()
-            
-            with open('python.py', 'r') as f:
-                output_text = f.read()
-
-            output_text = output_text.replace('\t', '    ')
-            window['-OUTPUT-'].update(output_text)
-                
-        elif event == '-CLEAR-':
-            window['-INPUT-'].update('')
-            window['-OUTPUT-'].update('')
-
+        for i in tree.getChildren():
+            print(i.getText())
+            print("----")
         
+        s = tree.toStringTree(recog=parser)
+        tab_count = 0
+        for c in s:
+            if c == '(':
+                print(c)
+                tab_count += 1
+                print('\t' * tab_count, end='')
+            elif c == ')':
+                tab_count -= 1
+                print('\n', '\t' * tab_count, c, end='')
+                tab_count = max(tab_count, 0)  # nie pozwalamy na ujemną ilość tabulacji
+            else:
+                print(c, end='')
+        #print(tree.toStringTree(recog=parser))
+        event, values = window.read()
+        if event in (None, 'Exit'):
+            break
+        print('You entered ', values['_IN_'])
+        window['_OUTPUT_'].update(values['_IN_'])
 
     window.close()
     
