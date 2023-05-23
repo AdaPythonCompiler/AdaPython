@@ -7,6 +7,9 @@ from generated.AdaGrammarParser import AdaGrammarParser
 from generated.AdaGrammarParserVisitor import AdaGrammarParserVisitor
 class AdaVisitor(AdaGrammarParserVisitor):
 
+
+    procedureList = []
+
     operators_map = {
         "and": "and",
         "or": "or",
@@ -60,6 +63,8 @@ class AdaVisitor(AdaGrammarParserVisitor):
     def visitProgram_declaration(self, ctx):
         print("Program_declaration")
         self.write("def " + ctx.program_head().getText() + "():")
+        if self.tab_count == 0:
+            self.procedureList.append(ctx.program_head().getText() + "()")
         self.tab_count += 1
         self.visitChildren(ctx)
         self.tab_count -= 1
@@ -196,6 +201,13 @@ class AdaVisitor(AdaGrammarParserVisitor):
             self.tab_count += 1
             self.visitChildren(i)
             self.tab_count -= 1
+    def visitEndOfFile(self):
+        print("EndOfFile")
+        self.write("if __name__ == '__main__':")
+        self.tab_count += 1
+        for i in self.procedureList:
+            self.write(i)
+        self.tab_count -= 1
 
 
 def main():
@@ -250,6 +262,7 @@ def main():
             tree = parser.program()
             visitor = AdaVisitor()
             visitor.visit(tree)
+            visitor.visitEndOfFile()
             visitor.out_file.close()
             
             with open('python.py', 'r') as f:
