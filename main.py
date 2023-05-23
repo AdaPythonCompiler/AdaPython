@@ -1,6 +1,7 @@
 import sys
 import PySimpleGUI as sg
 import time
+from pyrecord import Record
 from antlr4 import *
 from generated.AdaGrammarLexer import AdaGrammarLexer
 from generated.AdaGrammarParser import AdaGrammarParser
@@ -69,12 +70,6 @@ class AdaVisitor(AdaGrammarParserVisitor):
         self.visitChildren(ctx)
         self.tab_count -= 1
         # return self.visitChildren(ctx)
-        
-    def visitVariable_declaration(self, ctx):
-        print("Variable_declaration")
-        print(ctx.getChild(0).getText())
-        return self.visitChildren(ctx)
-    
     def visitExpression(self, ctx):
         print("Expression")
         return super().visitExpression(ctx)
@@ -176,9 +171,7 @@ class AdaVisitor(AdaGrammarParserVisitor):
         
     def visitRange(self, ctx):
         print("Range")
-        self.out_file.write('range(' + ctx.getChild(0).getText() + ", " + ctx.getChild(2).getText() + "):" + "\n")
-        # self.write('range(' + ctx.getChild(0).getText() + ", " + ctx.getChild(2).getText() + "):")
-
+        self.out_file.write('range(' + ctx.simple_expression(0).getText() + ", " + str(int(ctx.simple_expression(1).getText()) + 1) + "):" + "\n")
 
     def visitBasic_loop(self, ctx):
         print("Basic_loop")
@@ -201,47 +194,34 @@ class AdaVisitor(AdaGrammarParserVisitor):
             self.tab_count += 1
             self.visitChildren(i)
             self.tab_count -= 1
+
+    def visitType_declaration(self, ctx):
+        print("Type_declaration")
+        return self.visitChildren(ctx)
+    
+    def visitType_array_declaration(self, ctx):
+        print("Type_array_declaration")
+        id = ctx.ID().getText()
+        self.write(id +": list" + " = [x for x in range(" + ctx.simple_expression(0).getText() + ", " +  str(int(ctx.simple_expression(1).getText()) + 1) + ")]")
+        
     def visitEndOfFile(self):
         print("EndOfFile")
-        self.write("if __name__ == '__main__':")
-        self.tab_count += 1
-        for i in self.procedureList:
-            self.write(i)
-        self.tab_count -= 1
+        n = len(self.procedureList)
+        if n > 0:
+            self.write("if __name__ == '__main__':")
+            self.tab_count += 1
+            for i in self.procedureList:
+                self.write(i)
+            for i in range(n):
+             self.procedureList.pop()
+            self.tab_count -= 1
 
-
-def main():
-    # input_stream = FileStream("examples/simple.ada")
-    # lexer = AdaGrammarLexer(input_stream)
-    # stream = CommonTokenStream(lexer)
-    # parser = AdaGrammarParser(stream)
-    # tree = parser.program()
-    # visitor = AdaVisitor()
-    # visitor.visit(tree)
-
-    # for i in tree.getChildren():
-    #     print(i.getText())
-    #     print("----")
-    
-    # s = tree.toStringTree(recog=parser)
-    # tab_count = 0
-    # for c in s:
-    #     if c == '(':
-    #         print(c)
-    #         tab_count += 1
-    #         print('\t' * tab_count, end='')
-    #     elif c == ')':
-    #         tab_count -= 1
-    #         print('\n', '\t' * tab_count, c, end='')
-    #         tab_count = max(tab_count, 0)  # nie pozwalamy na ujemną ilość tabulacji
-    #     else:
-    #         print(c, end='')
-    # print(tree.toStringTree(recog=parser))     
-    
+        
+def main():    
     layout = [[sg.Text('Wprowadź kod w języku Ada:', font=('Arial', 14))],
           [sg.Multiline(key='-INPUT-', size=(80, 20),font=('Arial', 14))],
-          [sg.Button('Wykonaj', key='-EXECUTE-', size=(20, 3)),
-           sg.Button('Wyczyść', key='-CLEAR-', size=(20, 3))],
+          [sg.Button('Wykonaj', key='-EXECUTE-', size=(54, 3)),
+           sg.Button('Wyczyść', key='-CLEAR-', size=(54, 3))],
           [sg.Text('Kod w języku Python:', font=('Arial', 14))],
           [sg.Multiline(key='-OUTPUT-', size=(80, 20),font=('Arial', 14))]]
     

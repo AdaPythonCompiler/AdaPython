@@ -15,8 +15,8 @@ package_import: WITH ID PERIOD ID SEMICOLON;
 package_use: USE ID PERIOD ID SEMICOLON;
 
 program_declaration: program_head IS (
-    // | program_declaration
     variable_declaration
+    | type_array_declaration
     | full_variable_declaration
 )* begin_end_block?;
 
@@ -28,6 +28,8 @@ variable_declaration: ID COLON type SEMICOLON;
 
 full_variable_declaration: ID COLON type ASSIGN expression SEMICOLON;
 
+type_array_declaration: TYPE ID IS RANGE simple_expression DOT_DOT simple_expression SEMICOLON;
+
 type: INT_TYPE | FLOAT_TYPE | CHAR_TYPE | STRING_TYPE | BOOLEAN_TYPE | ID;
 
 begin_end_block : (BEGIN (statement)*)? END ID SEMICOLON; // ID!!!
@@ -36,10 +38,7 @@ statement :
     (simple_statement
     | if_statement
     | loop_statement 
-    | case_statement 
-    // | exit_statement 
-    // | return_statement 
-    // | null_statement
+    | case_statement
     );
 
 if_statement : IF expression THEN (statement)* (elsif_statement)* (else_statement)? END IF SEMICOLON;
@@ -69,7 +68,6 @@ case_statement_alternative : WHEN expression ARROW (statement)*;
 simple_statement : 
     assignment_statement 
     | procedure_call_statement
-    //| function_call_statement
     ;
 procedure_call_statement : ID LPAREN (expression (COMMA expression)*)? RPAREN SEMICOLON;
 
