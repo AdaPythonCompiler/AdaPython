@@ -3,9 +3,22 @@ import PySimpleGUI as sg
 import time
 from pyrecord import Record
 from antlr4 import *
+from antlr4.error import ErrorListener
 from generated.AdaGrammarLexer import AdaGrammarLexer
 from generated.AdaGrammarParser import AdaGrammarParser
 from generated.AdaGrammarParserVisitor import AdaGrammarParserVisitor
+
+class ErrorListener(ErrorListener.ErrorListener):
+    def __init__(self):
+        super(ErrorListener, self).__init__()
+        self.errors = []
+
+    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
+        self.errors.append("line " + str(line) + ":" + str(column) + " " + msg)
+
+    def getSyntaxErrors(self):
+        return self.errors
+
 
 class AdaVisitor(AdaGrammarParserVisitor):
 
@@ -258,7 +271,8 @@ def main():
             lexer = AdaGrammarLexer(input_stream)
             stream = CommonTokenStream(lexer)
             parser = AdaGrammarParser(stream)
-            SyntaxErrorListener = parser.SyntaxErrorListener()
+            SyntaxErrorListener = ErrorListener()
+            parser.removeErrorListeners()
             parser.addErrorListener(SyntaxErrorListener)
             
             tree = parser.program()
@@ -268,17 +282,21 @@ def main():
             visitor.out_file.close()
             
 
-            
-            with open('python.py', 'r') as f:
-                output_text = f.read()
-
-            output_text = output_text.replace('\t', '    ')
-            window['-OUTPUT-'].update(output_text)
-
+        
             number_of_errors = parser.getNumberOfSyntaxErrors()
             if number_of_errors > 0:
-               
-                window['-TERMINAL-'].update(SyntaxErrorListener.getSyntaxErrors())
+                window['-OUTPUT-'].update('Wystąpiły błędy w kodzie')
+                window['-TERMINAL-'].update('')
+                for error in SyntaxErrorListener.getSyntaxErrors():
+                    window['-TERMINAL-'].update(error + '\n', append=True)
+            else:
+                with open('python.py', 'r') as f:
+                    output_text = f.read()
+
+                output_text = output_text.replace('\t', '    ')
+                window['-OUTPUT-'].update(output_text)
+
+                window['-TERMINAL-'].update('')
             #write antlr errors to terminal
 
                 
