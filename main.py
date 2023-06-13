@@ -239,22 +239,22 @@ def main():
     input_code_column = [
         [sg.Text('Wprowadź kod w języku Ada:', font=('Arial', 14))],
         [sg.Multiline(key='-INPUT-', size=(80, 20),font=('Arial', 14))],
-        [sg.Button('Wykonaj', key='-EXECUTE-', size=(36, 3)),
-            sg.Button('Wyczyść', key='-CLEAR-', size=(36, 3)),
-            sg.Button('Zaladuj', key='-LOAD-', size=(36, 3))
+        [sg.Button('Wykonaj', key='-EXECUTE-', size=(34, 3)),
+            sg.Button('Wyczyść', key='-CLEAR-', size=(34, 3)),
+            sg.Button('Zaladuj', key='-LOAD-', size=(34, 3))
             ]
     ]
 
     output_code_column = [
         [sg.Text('Kod w języku Python:', font=('Arial', 14))],
         [sg.Multiline(key='-OUTPUT-', size=(80, 20),font=('Arial', 14))],
-        [sg.Button('Zapisz', key='-SAVE-', size=(54, 3))]
+        [sg.Button('Zapisz', key='-SAVE-', size=(113, 3))]
     ]
 
 
     terminal_bottom = [
         [sg.Text('Terminal:', font=('Arial', 14))],
-        [sg.Multiline(key='-TERMINAL-', size=(160, 20),font=('Arial', 14))]
+        [sg.Multiline(key='-TERMINAL-', size=(165, 20),font=('Arial', 14))]
     ]
 
     layout = [
