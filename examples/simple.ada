@@ -4,6 +4,7 @@ with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 
 procedure Greet is
 A : Integer;
+type B is range 0 .. 11;
 begin
    if A = 0 then
       Put_Line("A is zero");
