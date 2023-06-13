@@ -1,7 +1,4 @@
-import sys
 import PySimpleGUI as sg
-import time
-from pyrecord import Record
 from antlr4 import *
 from antlr4.error import ErrorListener
 from generated.AdaGrammarLexer import AdaGrammarLexer

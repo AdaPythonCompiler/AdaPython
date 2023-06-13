@@ -1,6 +1,6 @@
-# Generated from AdaGrammarParser.g4 by ANTLR 4.12.0
+# Generated from AdaGrammarParser.g4 by ANTLR 4.13.0
 from antlr4 import *
-if __name__ is not None and "." in __name__:
+if "." in __name__:
     from .AdaGrammarParser import AdaGrammarParser
 else:
     from AdaGrammarParser import AdaGrammarParser
@@ -46,6 +46,11 @@ class AdaGrammarParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by AdaGrammarParser#full_variable_declaration.
     def visitFull_variable_declaration(self, ctx:AdaGrammarParser.Full_variable_declarationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by AdaGrammarParser#type_array_declaration.
+    def visitType_array_declaration(self, ctx:AdaGrammarParser.Type_array_declarationContext):
         return self.visitChildren(ctx)
 
 

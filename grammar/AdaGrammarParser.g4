@@ -18,6 +18,7 @@ program_declaration: program_head IS (
     variable_declaration
     | type_array_declaration
     | full_variable_declaration
+    | program_declaration
 )* begin_end_block?;
 
 program_head: PROCEDURE ID input_vars? | FUNCTION ID input_vars? RETURN ID;
