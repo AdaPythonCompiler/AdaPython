@@ -23,6 +23,8 @@ class ErrorListener(ErrorListener.ErrorListener):
 class AdaVisitor(AdaGrammarParserVisitor):
 
 
+    subprogramList = []
+
     procedureList = []
 
     operators_map = {
@@ -80,9 +82,14 @@ class AdaVisitor(AdaGrammarParserVisitor):
         self.write("def " + ctx.program_head().getText() + "():")
         if self.tab_count == 0:
             self.procedureList.append(ctx.program_head().getText() + "()")
+        else:
+            self.subprogramList.append(ctx.program_head().getText() + "()")
         self.tab_count += 1
         self.visitChildren(ctx)
         self.tab_count -= 1
+        if ctx.program_head().getText() + "()" in self.subprogramList:
+            self.subprogramList.remove(ctx.program_head().getText() + "()")
+            self.write(ctx.program_head().getText() + "()")
         # return self.visitChildren(ctx)
     def visitExpression(self, ctx):
         print("Expression")
