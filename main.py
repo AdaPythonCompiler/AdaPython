@@ -6,6 +6,7 @@ from antlr4 import *
 from generated.AdaGrammarLexer import AdaGrammarLexer
 from generated.AdaGrammarParser import AdaGrammarParser
 from generated.AdaGrammarParserVisitor import AdaGrammarParserVisitor
+
 class AdaVisitor(AdaGrammarParserVisitor):
 
 
@@ -217,14 +218,32 @@ class AdaVisitor(AdaGrammarParserVisitor):
             self.tab_count -= 1
 
         
-def main():    
-    layout = [[sg.Text('Wprowadź kod w języku Ada:', font=('Arial', 14))],
-          [sg.Multiline(key='-INPUT-', size=(80, 20),font=('Arial', 14))],
-          [sg.Button('Wykonaj', key='-EXECUTE-', size=(54, 3)),
-           sg.Button('Wyczyść', key='-CLEAR-', size=(54, 3))],
-          [sg.Text('Kod w języku Python:', font=('Arial', 14))],
-          [sg.Multiline(key='-OUTPUT-', size=(80, 20),font=('Arial', 14))]]
-    
+def main():
+    input_code_column = [
+        [sg.Text('Wprowadź kod w języku Ada:', font=('Arial', 14))],
+        [sg.Multiline(key='-INPUT-', size=(80, 20),font=('Arial', 14))],
+        [sg.Button('Wykonaj', key='-EXECUTE-', size=(54, 3)),
+            sg.Button('Wyczyść', key='-CLEAR-', size=(54, 3))]
+    ]
+
+    output_code_column = [
+        [sg.Text('Kod w języku Python:', font=('Arial', 14))],
+        [sg.Multiline(key='-OUTPUT-', size=(80, 20),font=('Arial', 14))]
+    ]
+
+
+    terminal_bottom = [
+        [sg.Text('Terminal:', font=('Arial', 14))],
+        [sg.Multiline(key='-TERMINAL-', size=(160, 20),font=('Arial', 14))]
+    ]
+
+    layout = [
+        [sg.Column(input_code_column),
+        sg.VSeperator(),
+        sg.Column(output_code_column)],
+        [sg.Column(terminal_bottom)]
+    ]
+
     window = sg.Window('AdaToPython', layout)
 
     while True:  # Event Loop
@@ -239,21 +258,35 @@ def main():
             lexer = AdaGrammarLexer(input_stream)
             stream = CommonTokenStream(lexer)
             parser = AdaGrammarParser(stream)
+            SyntaxErrorListener = parser.SyntaxErrorListener()
+            parser.addErrorListener(SyntaxErrorListener)
+            
             tree = parser.program()
             visitor = AdaVisitor()
             visitor.visit(tree)
             visitor.visitEndOfFile()
             visitor.out_file.close()
             
+
+            
             with open('python.py', 'r') as f:
                 output_text = f.read()
 
             output_text = output_text.replace('\t', '    ')
             window['-OUTPUT-'].update(output_text)
+
+            number_of_errors = parser.getNumberOfSyntaxErrors()
+            if number_of_errors > 0:
+               
+                window['-TERMINAL-'].update(SyntaxErrorListener.getSyntaxErrors())
+            #write antlr errors to terminal
+
                 
         elif event == '-CLEAR-':
             window['-INPUT-'].update('')
             window['-OUTPUT-'].update('')
+            with open('python.py', 'w') as f:
+                f.write('')
 
         
 
