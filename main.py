@@ -235,13 +235,16 @@ def main():
     input_code_column = [
         [sg.Text('Wprowadź kod w języku Ada:', font=('Arial', 14))],
         [sg.Multiline(key='-INPUT-', size=(80, 20),font=('Arial', 14))],
-        [sg.Button('Wykonaj', key='-EXECUTE-', size=(54, 3)),
-            sg.Button('Wyczyść', key='-CLEAR-', size=(54, 3))]
+        [sg.Button('Wykonaj', key='-EXECUTE-', size=(36, 3)),
+            sg.Button('Wyczyść', key='-CLEAR-', size=(36, 3)),
+            sg.Button('Zaladuj', key='-LOAD-', size=(36, 3))
+            ]
     ]
 
     output_code_column = [
         [sg.Text('Kod w języku Python:', font=('Arial', 14))],
-        [sg.Multiline(key='-OUTPUT-', size=(80, 20),font=('Arial', 14))]
+        [sg.Multiline(key='-OUTPUT-', size=(80, 20),font=('Arial', 14))],
+        [sg.Button('Zapisz', key='-SAVE-', size=(54, 3))]
     ]
 
 
@@ -264,6 +267,13 @@ def main():
 
         if event == sg.WIN_CLOSED or event == 'Exit':
             break
+
+        if event == '-LOAD-':
+            filename = sg.popup_get_file('Wczytaj plik', no_window=True)
+            if filename:
+                with open(filename, 'r') as f:
+                    code = f.read()
+                window['-INPUT-'].update(code)
 
         if event == '-EXECUTE-':
             input_stream = InputStream(values['-INPUT-'])
@@ -299,6 +309,11 @@ def main():
                 window['-TERMINAL-'].update('')
             #write antlr errors to terminal
 
+        if event == '-SAVE-':
+            filename = sg.popup_get_file('Zapisz plik', save_as=True, no_window=True)
+            if filename:
+                with open(filename, 'w') as f:
+                    f.write(values['-OUTPUT-'])
                 
         elif event == '-CLEAR-':
             window['-INPUT-'].update('')
