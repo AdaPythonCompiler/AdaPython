@@ -1,5 +1,5 @@
 procedure Main is
-   type Int_Array is of Integer;
+   type Int_Array is of Integer
    procedure Swap (A : in out Int_Array; I, J : Integer) is
       T : Integer := A (I);
    begin
