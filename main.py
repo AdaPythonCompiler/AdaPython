@@ -294,6 +294,8 @@ def main():
             visitor.visit(tree)
             visitor.visitEndOfFile()
             visitor.out_file.close()
+            visitor.subprogramList = []
+            visitor.procedureList = []
             
 
         
